@@ -1,0 +1,133 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Swagger API Dev Junior",
+    "description": "API de exemplo utilizado para o teste da vaga de desenvolvedor junior.",
+    "version": "1.0.0"
+  },
+  "host": "localhost:3333",
+  "basePath": "/api",
+  "tags": [
+    {
+      "name": "Proteins",
+      "description": "Retorna dados das proteinas do servidor"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/proteins": {
+      "get": {
+        "tags": [
+          "Proteins"
+        ],
+        "summary": "Retorna todas as proteinas no servidor",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "type": "number",
+            "default": 1,
+            "description": "Seleciona a pagina quando o número de registro passar do limite. Quando não informado será 1"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "type": "number",
+            "description": "Limita o número de registro a serem retornados na página. Quando não informado o limite será 15",
+            "default": 15,
+            "allowEmptyValue": false
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "type": "number",
+            "default": 0,
+            "description": "Determina o número de registro a serem pulados. Quando não informado o offset será 0"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/proteins"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/proteins/{id}": {
+      "get": {
+        "tags": [
+          "Proteins"
+        ],
+        "summary": "Retorna uma proteína a partir de uma ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "description": "Utiliza como ID o campo protein-accession",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/protein"
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "protein": {
+      "type": "object",
+      "properties": {
+        "protein_accession": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "synonyms": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "proteins": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "$ref": "#/definitions/protein"
+      }
+    }
+  }
+}
